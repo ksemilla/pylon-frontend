@@ -4,9 +4,19 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { BrowserRouter as Router } from 'react-router-dom'
+import { AuthProvider } from "stores/auth"
+import { CommonProvider } from "stores/common"
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      <CommonProvider>
+        <Router>
+          <App />
+        </Router>
+      </CommonProvider>
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
