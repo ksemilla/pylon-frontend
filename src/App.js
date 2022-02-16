@@ -11,6 +11,8 @@ import QuotationList from 'views/quotations/list';
 import QuotationDetail from 'views/quotations/components/detail';
 import QuotationEdit from 'views/quotations/components/edit';
 
+import Customers from 'views/customers'
+
 import { useAuthContext } from 'stores/auth';
 import { useEffect, useState } from 'react';
 import { verify } from 'api/auth';
@@ -68,6 +70,9 @@ function App() {
           <Route path='add' element={<QuotationAdd />} />
           <Route path=':id' element={<QuotationDetail />} />
           <Route path=':id/edit' element={<QuotationEdit />} />
+        </Route>
+        <Route path='/customers' element={<Customers />}>
+          
         </Route>
       </Route>
     </Routes>
