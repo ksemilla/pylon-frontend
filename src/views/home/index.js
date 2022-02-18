@@ -1,7 +1,9 @@
 const Home = () => {
   return (
     <div>
-      home
+      {Array.from(Array(10).keys()).map(()=>(
+        <p className="p-24">a</p>
+      ))}
     </div>
   )
 }

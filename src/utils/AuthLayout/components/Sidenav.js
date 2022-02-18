@@ -1,48 +1,85 @@
-import { FaAlignJustify } from "react-icons/fa"
-import { Link } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { 
+  FaTabletAlt,
+  FaBookOpen,
+  FaBox,
+  FaUsers,
+  FaSignOutAlt,
+} from "react-icons/fa"
+import { Link, useLocation } from "react-router-dom"
 import { useAuthContext } from "stores/auth"
 
 const elements = [
   {
     label: "Dashboard",
-    icon: FaAlignJustify,
-    path: "/"
+    icon: FaTabletAlt,
+    path: "/",
+    value: ""
   },
   {
     label: "Quotations",
-    icon: FaAlignJustify,
-    path: "/quotations"
+    icon: FaBookOpen,
+    path: "/quotations",
+    value: "quotations"
   },
   {
     label: "Items",
-    icon: FaAlignJustify,
-    path: "/items"
+    icon: FaBox,
+    path: "/items",
+    value: "items"
   },
   {
     label: "Customers",
-    icon: FaAlignJustify,
-    path: "/customers"
+    icon: FaUsers,
+    path: "/customers",
+    value: "customers"
   }
 ]
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ')
+}
 
 const Sidenav = () => {
 
   const authContext = useAuthContext()
+  const location = useLocation()
+  const [view, setView] = useState("")
+
+  useEffect(()=>{
+    const param = location.pathname.split("/", 2)[1]
+    if (param === "quotations") {
+      setView("quotations")
+    } else if (param === "items") {
+      setView("items")
+    } else if (param === "customers") {
+      setView("customers")
+    } else {
+      setView("")
+    }
+  }, [location.pathname])
 
   return (
-    <div className="w-2/12 relative">
-      <div className="sticky -top-0 -left-0 right-0 border border-gray-100">
+    <div className="w-2/12 relative flex flex-col border border-gray-200">
+      <div className="h-full border-b border-gray-200">
         {elements.map((element, idx) => (
           <Link to={element.path} key={element.label}>
-            <div key={idx} className="cursor-pointer hover:bg-gray-100 p-2 items-center grid grid-cols-12">
-              <element.icon />
+            <div key={idx} className={classNames(
+              view === element.value ? "bg-gray-200 text-black" : "hover:bg-gray-50",
+              "cursor-pointer items-center grid grid-cols-12 text-gray-600 p-2 m-2 rounded-md hover:text-black",
+            )}>
+              <div className="col-span-2 justify-center flex">
+                <element.icon />
+              </div>
               {element.label}
             </div>
           </Link>
         ))}
       </div>
       <div className="cursor-pointer hover:bg-gray-100 p-2 items-center grid grid-cols-12" onClick={()=>authContext.logUserOut()}>
-        <FaAlignJustify />
+        <div className="col-span-2 justify-center flex">
+          <FaSignOutAlt />
+        </div>
         Logout
       </div>
     </div>
