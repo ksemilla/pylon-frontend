@@ -2,7 +2,7 @@ import { PrivateAPI } from "api"
 
 export const getQuotations = () => {
 	const url = `api/quotations/`
-	return PrivateAPI.get(url)
+	return PrivateAPI.get(url, )
 }
 
 export const fectchQuotation = (id) => {
@@ -15,7 +15,7 @@ export const createQuotation = (data) => {
 	return PrivateAPI.post(url, data)
 }
 
-export const updateQuotation = (data) => {
+export const updateQuotation = (data, ) => {
 	const url = `api/quotations/${data.id}/`
 	return PrivateAPI.put(url, data)
 }

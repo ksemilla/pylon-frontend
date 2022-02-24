@@ -9,7 +9,7 @@ const CustomerAdd = () => {
   const onSubmit = data => {
     createCustomer(data)
     .then(res=>{
-      navigate(`/customers/${res.data.id}`, { customer: res.data })
+      navigate(`/customers/${res.data.id}`, { state: { customer: res.data } })
     })
     .catch(res=>{
       console.log(res.response)

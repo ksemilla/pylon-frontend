@@ -1,36 +1,13 @@
-import { useEffect, useState } from "react"
-import { useCustomer } from ".."
-import { v4 as uuidv4 } from 'uuid';
-import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
-import { createCustomerAddress, updateCustomerAddress } from "api/customers";
+import { useForm } from "react-hook-form"
 
-const AddressForm = ({ initialValues }) => {
-
-  const { id } = useParams()
+const VendorContactForm = ({ initialValues, onSubmit }) => {
 
   const { register, handleSubmit } = useForm({
     defaultValues: initialValues
   })
 
   const submit = handleSubmit((data)=>{
-    if (initialValues?.id) {
-      updateCustomerAddress(id, data.id, data)
-      .then(res=>{
-        console.log(res.data)
-      })
-      .catch(res=>{
-        console.log(res.response)
-      })
-    } else {
-      createCustomerAddress(id, data)
-      .then(res=>{
-        console.log(res)
-      })
-      .catch(res=>{
-        console.log(res.response)
-      })
-    }
+    onSubmit(data)
   })
 
   const onDelete = e => {
@@ -41,7 +18,7 @@ const AddressForm = ({ initialValues }) => {
     <form onSubmit={submit}>
       <div className="grid grid-cols-6 gap-y-2 gap-x-2">
         <div className="col-span-2">
-          <label className="block text-sm font-medium text-gray-700">Address 1</label>
+          <label className="block text-sm font-medium text-gray-700">address1</label>
           <input
             type="text"
             {...register("address1")}
@@ -49,7 +26,7 @@ const AddressForm = ({ initialValues }) => {
           />
         </div>
         <div className="col-span-2">
-          <label className="block text-sm font-medium text-gray-700">Address 2</label>
+          <label className="block text-sm font-medium text-gray-700">address2</label>
           <input
             type="text"
             {...register("address2")}
@@ -57,7 +34,7 @@ const AddressForm = ({ initialValues }) => {
           />
         </div>
         <div className="col-span-2">
-          <label className="block text-sm font-medium text-gray-700">City</label>
+          <label className="block text-sm font-medium text-gray-700">city</label>
           <input
             type="text"
             {...register("city")}
@@ -65,7 +42,7 @@ const AddressForm = ({ initialValues }) => {
           />
         </div>
         <div className="col-span-2">
-          <label className="block text-sm font-medium text-gray-700">State</label>
+          <label className="block text-sm font-medium text-gray-700">state</label>
           <input
             type="text"
             {...register("state")}
@@ -73,7 +50,7 @@ const AddressForm = ({ initialValues }) => {
           />
         </div>
         <div className="col-span-2">
-          <label className="block text-sm font-medium text-gray-700">Country</label>
+          <label className="block text-sm font-medium text-gray-700">country</label>
           <input
             type="text"
             {...register("country")}
@@ -81,7 +58,7 @@ const AddressForm = ({ initialValues }) => {
           />
         </div>
         <div className="col-span-2">
-          <label className="block text-sm font-medium text-gray-700">Postal Code</label>
+          <label className="block text-sm font-medium text-gray-700">postal_code</label>
           <input
             type="text"
             {...register("postal_code")}
@@ -106,54 +83,4 @@ const AddressForm = ({ initialValues }) => {
   )
 }
 
-const CustomerAddressInline = ({ address }) => {
-  return (
-    <div className="bg-white p-2 border border-gray-200 rounded-md">
-      <AddressForm initialValues={address} /> 
-    </div>
-  )
-}
-
-const CustomerAddresses = () => {
-
-  const { customer } = useCustomer()
-
-  const [addresses, setAddresses] = useState([])
-
-  useEffect(()=>{
-    if (customer) {
-      setAddresses(customer.addresses.map((address) => ({...address, uuid: uuidv4()})))
-    }
-  }, [customer])
-
-  const onAddAddress = e => {
-    e.preventDefault()
-    setAddresses(prevState => ([
-      ...prevState,
-      {
-        uuid: uuidv4()
-      }
-    ]))
-  }
-
-  return (
-    <div>
-      <h1 className="font-medium text-2xl">{customer?.name} - {customer?.code}</h1>
-      <div className="grid grid-cols-1 gap-y-2">
-        {addresses?.map((address, idx) => {
-          return (
-            <CustomerAddressInline key={address.uuid} address={address} />
-          )
-        })}
-      </div>
-      <div className="mt-2">
-        <button
-          onClick={onAddAddress}
-          className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        >Add New Address</button>
-      </div>
-    </div>
-  )
-}
-
-export default CustomerAddresses
+export default VendorContactForm

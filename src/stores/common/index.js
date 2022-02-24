@@ -6,6 +6,7 @@ const CommonContext = createContext({})
 export class CommonStore {
   inventory = []
   items = []
+  vendors = []
 
   constructor() {
 		makeObservable(
@@ -13,6 +14,7 @@ export class CommonStore {
 			{
 				inventory: observable,
 				items: observable,
+        vendors: observable,
 			}
 		)
 	}
@@ -20,6 +22,10 @@ export class CommonStore {
   setInventory = (data) => {
     this.inventory = data
     this.items = data.filter(item => item.type !== "a")
+  }
+
+  setVendors = data => {
+    this.vendors = data
   }
 
 }

@@ -1,34 +1,13 @@
-import { createCustomerContact, updateCustomerContact } from "api/customers"
 import { useForm } from "react-hook-form"
-import { useParams } from "react-router-dom"
 
-
-const CustomerContactForm = ({ initialValues }) => {
-
-  const { id } = useParams()
+const VendorContactForm = ({ initialValues, onSubmit }) => {
 
   const { register, handleSubmit } = useForm({
     defaultValues: initialValues
   })
 
   const submit = handleSubmit((data)=>{
-    if (initialValues?.id) {
-      updateCustomerContact(id, data.id, data)
-      .then(res=>{
-        console.log(res.data)
-      })
-      .catch(res=>{
-        console.log(res.response)
-      })
-    } else {
-      createCustomerContact(id, data)
-      .then(res=>{
-        console.log(res)
-      })
-      .catch(res=>{
-        console.log(res.response)
-      })
-    }
+    onSubmit(data)
   })
 
   const onDelete = e => {
@@ -80,4 +59,4 @@ const CustomerContactForm = ({ initialValues }) => {
   )
 }
 
-export default CustomerContactForm
+export default VendorContactForm

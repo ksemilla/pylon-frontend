@@ -1,4 +1,3 @@
-import { observer } from "mobx-react-lite"
 import { useEffect, useState } from "react"
 import { Link, Outlet, useLocation } from "react-router-dom"
 
@@ -7,11 +6,11 @@ function classNames(...classes) {
 }
 
 const tabs = [
-  { label: 'Quotations', to: '/quotations', val: "" },
-  { label: 'Add', to: '/quotations/add', val: "add" },
+  { label: 'Vendors', to: '/vendors', val: "" },
+  { label: 'Add', to: '/vendors/add', val: "add" },
 ]
 
-const Quotations = () => {
+const Vendors = () => {
 
   const location = useLocation()
 
@@ -59,4 +58,4 @@ const Quotations = () => {
   )
 }
 
-export default observer(Quotations)
+export default Vendors

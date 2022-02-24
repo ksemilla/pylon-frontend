@@ -7,7 +7,7 @@ import Home from 'views/home';
 
 import Quotations from 'views/quotations'
 import QuotationAdd from 'views/quotations/components/add';
-import QuotationList from 'views/quotations/list';
+import QuotationList from 'views/quotations/components/list';
 import QuotationDetail from 'views/quotations/components/detail';
 import QuotationEdit from 'views/quotations/components/edit';
 
@@ -20,12 +20,28 @@ import CustomerAddresses from 'views/customers/components/detail/components/Cust
 import CustomerContacts from 'views/customers/components/detail/components/CustomerContacts';
 
 import Items from 'views/items';
+import ItemList from 'views/items/list';
+import ItemAdd from 'views/items/add';
+import ItemDetail from 'views/items/detail';
+
+import Vendors from 'views/vendors';
+import VendorList from 'views/vendors/list';
+import VendorDetail from 'views/vendors/detail';
+import VendorGeneralInfo from 'views/vendors/detail/components/VendorGeneralInfo';
+import VendorContacts from 'views/vendors/detail/components/VendorContacts';
+import VendorAddresses from 'views/vendors/detail/components/VendorAddresses';
+
+import DocumentDetail from 'views/items/components/documents/DocumentDetail';
 
 import { useAuthContext } from 'stores/auth';
 import { useEffect, useState } from 'react';
 import { verify } from 'api/auth';
 import { getInventory } from 'api/items';
 import { useCommonContext } from 'stores/common';
+import DocumentForm from 'views/items/components/documents/DocumentForm';
+import DocumentVendors from 'views/items/components/documents/DocumentVendors';
+import DocumentGeneralInfo from 'views/items/components/documents/DocumentGeneralInfo';
+import { getVendors } from 'api/vendors';
 
 function App() {
 
@@ -61,6 +77,13 @@ function App() {
       .catch(err=>{
         console.log(err.response)
       })
+      getVendors()
+      .then(res=>{
+        commonContext.setVendors(res.data)
+      })
+      .catch(res=>{
+        console.log(res.response)
+      })
     }
   }, [authContext.isLogged, commonContext])
 
@@ -93,7 +116,27 @@ function App() {
         </Route>
 
         <Route path='/items' element={<Items />}>
+          <Route path='' element={<ItemList />} />
+          <Route path='add' element={<ItemAdd />} />
+          <Route path='documents'>
+            <Route path=':id' element={<DocumentDetail />}>
+              <Route path='' element={<DocumentGeneralInfo />} />
+              <Route path='vendors' element={<DocumentVendors />} />
+            </Route>
+          </Route>
+          <Route path=':id' element={<ItemDetail />}>
 
+          </Route>
+        </Route>
+
+        <Route path='/vendors' element={<Vendors />}>
+          <Route path='' element={<VendorList />} />
+          {/* <Route path='add' element={<CustomerAdd />} /> */}
+          <Route path=':id' element={<VendorDetail />}>
+            <Route path='' element={<VendorGeneralInfo />} />
+            <Route path='addresses' element={<VendorAddresses />} />
+            <Route path='contacts' element={<VendorContacts />} />
+          </Route>
         </Route>
 
       </Route>

@@ -1,34 +1,22 @@
-import { createCustomerContact, updateCustomerContact } from "api/customers"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
 
 
-const CustomerContactForm = ({ initialValues }) => {
+const VendorForm = ({ initialValues, onSubmit }) => {
 
   const { id } = useParams()
 
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, reset } = useForm({
     defaultValues: initialValues
   })
 
+  useEffect(()=>{
+    initialValues && reset(initialValues)
+  }, [initialValues])
+
   const submit = handleSubmit((data)=>{
-    if (initialValues?.id) {
-      updateCustomerContact(id, data.id, data)
-      .then(res=>{
-        console.log(res.data)
-      })
-      .catch(res=>{
-        console.log(res.response)
-      })
-    } else {
-      createCustomerContact(id, data)
-      .then(res=>{
-        console.log(res)
-      })
-      .catch(res=>{
-        console.log(res.response)
-      })
-    }
+    onSubmit(data)
   })
 
   const onDelete = e => {
@@ -38,6 +26,16 @@ const CustomerContactForm = ({ initialValues }) => {
   return (
     <form onSubmit={submit}>
       <div className="grid grid-cols-6 gap-y-2 gap-x-2">
+        <div className="col-span-2">
+          <label className="block text-sm font-medium text-gray-700">Status</label>
+          <select
+            {...register("status")}
+            className="focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-md sm:text-sm border-gray-300"
+          >
+            <option value="a">Active</option>
+            <option value="i">Inactive</option>
+          </select>
+        </div>
         <div className="col-span-2">
           <label className="block text-sm font-medium text-gray-700">Name</label>
           <input
@@ -80,4 +78,4 @@ const CustomerContactForm = ({ initialValues }) => {
   )
 }
 
-export default CustomerContactForm
+export default VendorForm

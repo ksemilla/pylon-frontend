@@ -1,4 +1,4 @@
-import { fectchCustomer } from "api/customers"
+import { fectchVendor } from "api/vendors"
 import { useEffect, useState } from "react"
 import { Link, Outlet, useLocation, useOutletContext, useParams } from "react-router-dom"
 
@@ -24,30 +24,30 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export function useCustomer() {
+export function useVendor() {
   return useOutletContext();
 }
 
-const CustomerDetail = () => {
+const VendorDetail = () => {
 
   const location = useLocation()
   const { id } = useParams()
-  const [customer, setCustomer] = useState()
+  const [vendor, setVendor] = useState()
   const [view, setView] = useState("")
 
   useEffect(()=>{
-    if (location.state?.customer) {
-      setCustomer(location.state.customer)
+    if (location.state?.vendor) {
+      setVendor(location.state.vendor)
     } else {
-      fectchCustomer(id)
+      fectchVendor(id)
       .then(res=>{
-        setCustomer(res.data)
+        setVendor(res.data)
       })
       .catch(res=>{
         console.log(res.response)
       })
     }
-  }, [id, location.state?.customer])
+  }, [id, location.state?.vendor])
 
   useEffect(()=>{
     const locationParts = location.pathname.split("/", 4)
@@ -69,7 +69,7 @@ const CustomerDetail = () => {
           <Link to={item.to} key={idx}>
             <div className={classNames(
               "p-2 rounded-md text-center hover:bg-gray-200",
-              view === item.value && "bg-white"
+              view === item.value && "bg-white text-blue-500"
             )}>
               {item.label}
             </div>
@@ -77,10 +77,10 @@ const CustomerDetail = () => {
         ))}
       </div>
       <div className="col-span-10">
-        <Outlet context={{ customer }}/>
+        <Outlet context={{ vendor }}/>
       </div>
     </div> 
   )
 }
 
-export default CustomerDetail
+export default VendorDetail

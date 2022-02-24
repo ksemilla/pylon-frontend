@@ -7,25 +7,27 @@ const getAccessToken = () => localStorage.getItem('access')
 const buildUrl = (url) => `${API_URL}/${url}`
 
 export const PrivateAPI = {
-  get: (url, query) => {
+  get: (url, query, ) => {
     return axios({
       method: 'get',
       url: buildUrl(url),
       headers: {
         Authorization: `JWT ${getAccessToken()}`
       },
-      params: query
+      params: query,
+      
     })
   },
 
-  post: (url, payload) => {
+  post: (url, payload, ) => {
     return axios({
       method: 'post',
       url: buildUrl(url),
       data: payload,
       headers: {
         Authorization: `JWT ${getAccessToken()}`
-      }
+      },
+      
     })
   },
 
@@ -41,25 +43,27 @@ export const PrivateAPI = {
   //   })
   // },
 
-  put: (url, payload) => {
+  put: (url, payload, ) => {
     return axios({
       method: 'put',
       url: buildUrl(url),
       data: payload,
       headers: {
         Authorization: `JWT ${getAccessToken()}`
-      }
+      },
+      
     })
   },
 
-  delete: (url, payload) => {
+  delete: (url, payload, ) => {
     return axios({
       method: 'delete',
       url: buildUrl(url),
       data: payload,
       headers: {
         Authorization: `JWT ${getAccessToken()}`
-      }
+      },
+      
     })
   }
 }

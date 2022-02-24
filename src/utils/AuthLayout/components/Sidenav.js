@@ -33,6 +33,12 @@ const elements = [
     icon: FaUsers,
     path: "/customers",
     value: "customers"
+  },
+  {
+    label: "Vendors",
+    icon: FaUsers,
+    path: "/vendors",
+    value: "vendors"
   }
 ]
 
@@ -54,6 +60,8 @@ const Sidenav = () => {
       setView("items")
     } else if (param === "customers") {
       setView("customers")
+    } else if (param === "vendors") {
+      setView("vendors")
     } else {
       setView("")
     }
@@ -65,8 +73,8 @@ const Sidenav = () => {
         {elements.map((element, idx) => (
           <Link to={element.path} key={element.label}>
             <div key={idx} className={classNames(
-              view === element.value ? "bg-gray-200 text-black" : "hover:bg-gray-50",
-              "cursor-pointer items-center grid grid-cols-12 text-gray-600 p-2 m-2 rounded-md hover:text-black",
+              view === element.value ? "bg-gray-200 text-black" : "text-gray-600 hover:bg-gray-50 hover:text-black",
+              "cursor-pointer items-center grid grid-cols-12 p-2 m-2 rounded-md",
             )}>
               <div className="col-span-2 justify-center flex">
                 <element.icon />
