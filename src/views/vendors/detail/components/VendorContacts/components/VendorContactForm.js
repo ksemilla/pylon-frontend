@@ -1,4 +1,6 @@
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import BeatLoader from "react-spinners/BeatLoader";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -6,13 +8,17 @@ function classNames(...classes) {
 
 const VendorContactForm = ({ initialValues, onSubmit, isLoading }) => {
 
-  const { register, handleSubmit, formState: { isDirty, errors } } = useForm({
+  const { register, handleSubmit, reset, formState: { isDirty, errors } } = useForm({
     defaultValues: initialValues
   })
 
   const submit = handleSubmit((data)=>{
     onSubmit(data)
   })
+  
+  useEffect(()=>{
+    if (!isLoading) reset(initialValues)
+  }, [isLoading])
 
   return (
     <form onSubmit={submit}>
@@ -51,7 +57,7 @@ const VendorContactForm = ({ initialValues, onSubmit, isLoading }) => {
             isDirty && !isLoading ? "bg-indigo-600 hover:bg-indigo-700" : "bg-gray-600"
           )}
           disabled={!isDirty || isLoading}
-        >Submit</button>
+        >{isLoading ? <BeatLoader size={8} color="white" /> : "Submit"}</button>
       </div>
 
     </form>

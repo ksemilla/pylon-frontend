@@ -138,7 +138,6 @@ const CustomerAddresses = () => {
 
   return (
     <div>
-      <h1 className="font-medium text-2xl">{customer?.name} - {customer?.code}</h1>
       <div className="grid grid-cols-1 gap-y-2">
         {addresses?.map((address, idx) => {
           return (

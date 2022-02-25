@@ -20,6 +20,11 @@ export const updateCustomer = (data) => {
 	return PrivateAPI.put(url, data)
 }
 
+export const deleteCustomer = (id) => {
+	const url = `api/customers/${id}/`
+	return PrivateAPI.delete(url)
+}
+
 export const createCustomerContact = (customer_id, data) => {
 	const url = `api/customers/${customer_id}/contacts/`
 	return PrivateAPI.post(url, data)

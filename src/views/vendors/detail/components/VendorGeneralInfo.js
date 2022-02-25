@@ -11,14 +11,18 @@ const VendorGeneralInfo = () => {
 
   const { vendor } = useVendor()
   const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false)
 
   const onSubmit = data => {
+    setIsLoading(true)
     updateVendor(vendor?.id, data)
     .then(res=>{
+      setIsLoading(false)
       navigate(`/vendors/${res.data.id}/`, { state: { vendor: res.data } })
     })
     .catch(res=>{
       console.log(res.response)
+      setIsLoading(false)
     })
   }
 
@@ -41,7 +45,7 @@ const VendorGeneralInfo = () => {
   return (
     <div className="divide-y divide-gray-200 bg-white border border-gray-200 rounded-md">
       <div className="flex justify-between items-center p-2">
-        <h1 className="font-medium text-gray-600">{vendor?.id}</h1>
+        <h1 className="font-medium text-gray-600">ID {vendor?.id}</h1>
         <button
           type="submit"
           className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
@@ -49,7 +53,7 @@ const VendorGeneralInfo = () => {
         >Delete</button>
       </div>
       <div className="p-2">
-        <VendorForm initialValues={vendor} onSubmit={onSubmit} />
+        <VendorForm initialValues={vendor} onSubmit={onSubmit} isLoading={isLoading} />
       </div>
 
       <Transition.Root show={open} as={Fragment}>
