@@ -1,18 +1,18 @@
 import { useForm } from "react-hook-form"
 
-const VendorContactForm = ({ initialValues, onSubmit }) => {
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ')
+}
 
-  const { register, handleSubmit } = useForm({
+const VendorContactForm = ({ initialValues, onSubmit, isLoading }) => {
+
+  const { register, handleSubmit, formState: { isDirty, errors } } = useForm({
     defaultValues: initialValues
   })
 
   const submit = handleSubmit((data)=>{
     onSubmit(data)
   })
-
-  const onDelete = e => {
-    e.preventDefault()
-  }
 
   return (
     <form onSubmit={submit}>
@@ -70,13 +70,12 @@ const VendorContactForm = ({ initialValues, onSubmit }) => {
       <div className="mt-3 flex justify-between">
         <button
           type="submit"
-          className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className={classNames(
+            "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500",
+            isDirty && !isLoading ? "bg-indigo-600 hover:bg-indigo-700" : "bg-gray-600"
+          )}
+          disabled={!isDirty || isLoading}
         >Submit</button>
-        <button
-          type="submit"
-          className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-          onClick={onDelete}
-        >Delete</button>
       </div>
 
     </form>

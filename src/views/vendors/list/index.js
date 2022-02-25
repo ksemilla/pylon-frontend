@@ -1,21 +1,35 @@
-import { getVendors } from "api/vendors"
 import { useEffect, useState } from "react"
+import BeatLoader from 'react-spinners/BeatLoader'
 
+import { getVendors } from "api/vendors"
 import VendorInline from "./components/VendorInline"
 
 const VendorList = () => {
 
+  const [isLoading, setIsLoading] = useState(false)
   const [vendors, setVendors] = useState([])
 
   useEffect(()=>{
+    setIsLoading(true)
     getVendors()
     .then(res=>{
       setVendors(res.data)
+      setIsLoading(false)
     })
     .catch(err=>{
+      setIsLoading(false)
       console.log(err.response)
     })
   }, [])
+
+  if (isLoading) {
+    return (
+      <div className="text-center p-24">
+        <h1 className="p-4">Fetching vendors</h1>
+        <BeatLoader />
+      </div>
+    )
+  }
 
   return (
     <div className="border border-gray-200 rounded-lg overflow-hidden">

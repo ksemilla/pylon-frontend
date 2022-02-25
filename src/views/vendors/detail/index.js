@@ -1,6 +1,7 @@
 import { fectchVendor } from "api/vendors"
 import { useEffect, useState } from "react"
 import { Link, Outlet, useLocation, useOutletContext, useParams } from "react-router-dom"
+import BeatLoader from 'react-spinners/BeatLoader'
 
 const navigation = [
   {
@@ -30,21 +31,26 @@ export function useVendor() {
 
 const VendorDetail = () => {
 
+  const [isLoading, setIsLoading] = useState(false)
   const location = useLocation()
   const { id } = useParams()
   const [vendor, setVendor] = useState()
   const [view, setView] = useState("")
 
   useEffect(()=>{
+    setIsLoading(true)
     if (location.state?.vendor) {
       setVendor(location.state.vendor)
+      setIsLoading(false)
     } else {
       fectchVendor(id)
       .then(res=>{
         setVendor(res.data)
+        setIsLoading(false)
       })
       .catch(res=>{
         console.log(res.response)
+        setIsLoading(false)
       })
     }
   }, [id, location.state?.vendor])
@@ -62,6 +68,14 @@ const VendorDetail = () => {
     }
   }, [location.pathname])
 
+  if (isLoading) {
+    return (
+      <div className="text-center p-24">
+        <h1 className="p-4">Fetching vendor {id} </h1>
+        <BeatLoader />
+      </div>
+    )
+  }
   return (
     <div className="col-span-12 grid grid-cols-12 gap-y-2 gap-x-2">
       <div className="col-span-2 flex flex-col gap-y-2">
