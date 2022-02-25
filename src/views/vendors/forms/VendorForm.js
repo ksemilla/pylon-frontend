@@ -1,13 +1,14 @@
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
-import { useParams } from "react-router-dom"
+import BeatLoader from "react-spinners/BeatLoader";
 
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ')
+}
 
-const VendorForm = ({ initialValues, onSubmit }) => {
+const VendorForm = ({ initialValues, onSubmit, isLoading }) => {
 
-  const { id } = useParams()
-
-  const { register, handleSubmit, reset } = useForm({
+  const { register, handleSubmit, reset, formState: { isDirty, errors } } = useForm({
     defaultValues: initialValues
   })
 
@@ -18,10 +19,6 @@ const VendorForm = ({ initialValues, onSubmit }) => {
   const submit = handleSubmit((data)=>{
     onSubmit(data)
   })
-
-  const onDelete = e => {
-    e.preventDefault()
-  }
 
   return (
     <form onSubmit={submit}>
@@ -37,11 +34,25 @@ const VendorForm = ({ initialValues, onSubmit }) => {
           </select>
         </div>
         <div className="col-span-2">
-          <label className="block text-sm font-medium text-gray-700">Name</label>
+          <label className="block text-sm font-medium text-gray-700">Code *</label>
           <input
             type="text"
-            {...register("name")}
-            className="focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-md sm:text-sm border-gray-300"
+            {...register("code", { required: true })}
+            className={classNames(
+              "block w-full min-w-0 rounded-none rounded-md sm:text-sm border-gray-300",
+              errors?.code ? "focus:border-red-500 focus:ring-red-500 border-red-300" : "focus:ring-indigo-500 focus:border-indigo-500 border-gray-300",
+            )}
+          />
+        </div>
+        <div className="col-span-2">
+          <label className="block text-sm font-medium text-gray-700">Name *</label>
+          <input
+            type="text"
+            {...register("name", { required: true })}
+            className={classNames(
+              "block w-full min-w-0 rounded-none rounded-md sm:text-sm",
+              errors?.name ? "focus:border-red-500 focus:ring-red-500 border-red-300" : "focus:ring-indigo-500 focus:border-indigo-500 border-gray-300",
+            )}
           />
         </div>
         <div className="col-span-2">
@@ -65,13 +76,12 @@ const VendorForm = ({ initialValues, onSubmit }) => {
       <div className="mt-3 flex justify-between">
         <button
           type="submit"
-          className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >Submit</button>
-        <button
-          type="submit"
-          className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-          onClick={onDelete}
-        >Delete</button>
+          className={classNames(
+            "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500",
+            isDirty && !isLoading ? "bg-indigo-600 hover:bg-indigo-700" : "bg-gray-600"
+          )}
+          disabled={!isDirty || isLoading}
+        >{isLoading ? <BeatLoader size={8} color="white" /> : "Submit"}</button>
       </div>
 
     </form>

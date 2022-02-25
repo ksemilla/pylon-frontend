@@ -20,6 +20,11 @@ export const updateVendor = (id, data) => {
 	return PrivateAPI.put(url, data)
 }
 
+export const deleteVendor = (id) => {
+	const url = `api/vendors/${id}/`
+	return PrivateAPI.delete(url)
+}
+
 export const createVendorAddress = (id, data) => {
 	const url = `api/vendors/${id}/addresses/`
 	return PrivateAPI.post(url, data)

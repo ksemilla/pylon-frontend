@@ -7,7 +7,6 @@ const DocumentVendorInline = ({ vendor }) => {
   const { id } = useParams()
 
   const onSubmit = data => {
-    console.log(data)
     if (vendor.id) {
       updateDocumentVendor(id, vendor.id, data)
       .then(res=>{

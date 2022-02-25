@@ -26,6 +26,7 @@ import ItemDetail from 'views/items/detail';
 
 import Vendors from 'views/vendors';
 import VendorList from 'views/vendors/list';
+import VendorAdd from 'views/vendors/add';
 import VendorDetail from 'views/vendors/detail';
 import VendorGeneralInfo from 'views/vendors/detail/components/VendorGeneralInfo';
 import VendorContacts from 'views/vendors/detail/components/VendorContacts';
@@ -131,7 +132,7 @@ function App() {
 
         <Route path='/vendors' element={<Vendors />}>
           <Route path='' element={<VendorList />} />
-          {/* <Route path='add' element={<CustomerAdd />} /> */}
+          <Route path='add' element={<VendorAdd />} />
           <Route path=':id' element={<VendorDetail />}>
             <Route path='' element={<VendorGeneralInfo />} />
             <Route path='addresses' element={<VendorAddresses />} />
