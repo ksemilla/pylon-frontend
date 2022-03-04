@@ -33,6 +33,7 @@ import VendorContacts from 'views/vendors/detail/components/VendorContacts';
 import VendorAddresses from 'views/vendors/detail/components/VendorAddresses';
 
 import DocumentDetail from 'views/items/components/documents/DocumentDetail';
+import StockDetail from 'views/items/components/stocks/StockDetail';
 
 import { useAuthContext } from 'stores/auth';
 import { useEffect, useState } from 'react';
@@ -43,6 +44,14 @@ import DocumentForm from 'views/items/components/documents/DocumentForm';
 import DocumentVendors from 'views/items/components/documents/DocumentVendors';
 import DocumentGeneralInfo from 'views/items/components/documents/DocumentGeneralInfo';
 import { getVendors } from 'api/vendors';
+import StockGeneralInfo from 'views/items/components/stocks/StockGeneralInfo';
+import StockVendors from 'views/items/components/stocks/StockVendors';
+import LaborDetail from 'views/items/components/labors/LaborDetail';
+import LaborGeneralInfo from 'views/items/components/labors/LaborGeneralInfo';
+import LaborVendors from 'views/items/components/labors/LaborVendors';
+import AssemblyDetail from 'views/items/components/assemblys/AssemblyDetail';
+import AssemblyGeneralInfo from 'views/items/components/assemblys/AssemblyGeneralInfo';
+import AssemblyVendors from 'views/items/components/assemblys/AssemblyVendors';
 
 function App() {
 
@@ -123,6 +132,24 @@ function App() {
             <Route path=':id' element={<DocumentDetail />}>
               <Route path='' element={<DocumentGeneralInfo />} />
               <Route path='vendors' element={<DocumentVendors />} />
+            </Route>
+          </Route>
+          <Route path='stocks'>
+            <Route path=':id' element={<StockDetail />}>
+              <Route path='' element={<StockGeneralInfo />} />
+              <Route path='vendors' element={<StockVendors />} />
+            </Route>
+          </Route>
+          <Route path='labors'>
+            <Route path=':id' element={<LaborDetail />}>
+              <Route path='' element={<LaborGeneralInfo />} />
+              <Route path='vendors' element={<LaborVendors />} />
+            </Route>
+          </Route>
+          <Route path='assembly'>
+            <Route path=':id' element={<AssemblyDetail />}>
+              <Route path='' element={<AssemblyGeneralInfo />} />
+              <Route path='vendors' element={<AssemblyVendors />} />
             </Route>
           </Route>
           <Route path=':id' element={<ItemDetail />}>

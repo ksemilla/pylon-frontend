@@ -1,19 +1,18 @@
-import { updateDocument } from "api/items"
+import { updateLabor } from "api/items"
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationIcon } from '@heroicons/react/outline'
-import { useDocument } from "./DocumentDetail"
+import { useLabor } from "./LaborDetail"
+import LaborForm from "./LaborForm"
 
-const { default: DocumentForm } = require("./DocumentForm")
+const LaborGeneralInfo = () => {
 
-const DocumentGeneralInfo = () => {
-
-  const { document } = useDocument()
+  const { labor } = useLabor()
   const [open, setOpen] = useState(false)
   const cancelButtonRef = useRef(null)
 
   const onSubmit = data => {
-    updateDocument(document.id, data)
+    updateLabor(labor.id, data)
     .then(res=>{
       console.log(res.data)
     })
@@ -37,7 +36,7 @@ const DocumentGeneralInfo = () => {
   return (
     <div className="divide-y divide-gray-200 bg-white border border-gray-200 rounded-md">
       <div className="flex justify-between items-center p-2">
-        <h1 className="font-medium text-gray-600">ID {document?.id}</h1>
+        <h1 className="font-medium text-gray-600">ID {labor?.id}</h1>
         <button
           type="submit"
           className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
@@ -45,7 +44,7 @@ const DocumentGeneralInfo = () => {
         >Delete</button>
       </div>
       <div className="p-2">
-        <DocumentForm initialValues={document} onSubmit={onSubmit} />
+        <LaborForm initialValues={labor} onSubmit={onSubmit} />
       </div>
 
       <Transition.Root show={open} as={Fragment}>
@@ -83,13 +82,13 @@ const DocumentGeneralInfo = () => {
                   </div>
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
-                      Delete document {document?.id}?
+                      Delete labor {labor?.id}?
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
-                        Are you sure you want to delete this document? <br/><br />
-                        Part number: <span className="font-medium text-gray-700">{document?.part_number}</span> <br/>
-                        Name: <span className="font-medium text-gray-700">{document?.name}</span>
+                        Are you sure you want to delete this labor? <br/><br />
+                        Part number: <span className="font-medium text-gray-700">{labor?.part_number}</span> <br/>
+                        Name: <span className="font-medium text-gray-700">{labor?.name}</span>
                       </p>
                     </div>
                   </div>
@@ -121,4 +120,4 @@ const DocumentGeneralInfo = () => {
   )
 }
 
-export default DocumentGeneralInfo
+export default LaborGeneralInfo

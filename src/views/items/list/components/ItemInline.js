@@ -28,6 +28,7 @@ const ItemInline = ({ item, idx }) => {
         idx % 2 === 0 ? "bg-white" : "bg-gray-100"
       )}>
         <div>{item.id}</div>
+        <div className="col-span-2">{item.part_number}</div>
         <div className="col-span-3">{item.name}</div>
       </div>
     </Link>

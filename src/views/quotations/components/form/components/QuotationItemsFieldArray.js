@@ -28,8 +28,8 @@ const QuotatinItemInline = ({ watch, register, control, idx, setValue,  getValue
     } else {
       setValue(`items[${idx}].sell_price`, data.sell_price)
     }
-
   }
+  
   const quantity = watch(`items.${idx}.quantity`)
   const sellPrice = watch(`items.${idx}.sell_price`)
   let total = quantity * sellPrice

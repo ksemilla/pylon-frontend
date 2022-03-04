@@ -1,31 +1,40 @@
-import { updateDocument } from "api/items"
+import { createDocumentVendor, updateAssemblyVendor } from "api/items"
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationIcon } from '@heroicons/react/outline'
-import { useDocument } from "./DocumentDetail"
+import { useParams } from "react-router-dom"
+import AssemblyVendorForm from "./AssemblyVendorForm"
 
-const { default: DocumentForm } = require("./DocumentForm")
+const AssemblyVendorInline = ({ vendor }) => {
 
-const DocumentGeneralInfo = () => {
-
-  const { document } = useDocument()
+  const { id } = useParams()
   const [open, setOpen] = useState(false)
   const cancelButtonRef = useRef(null)
 
   const onSubmit = data => {
-    updateDocument(document.id, data)
-    .then(res=>{
-      console.log(res.data)
-    })
-    .catch(res=>{
-      console.log(res.response)
-    })
+    if (vendor.id) {
+      updateAssemblyVendor(id, vendor.id, data)
+      .then(res=>{
+        console.log(res.data)
+      })
+      .catch(err=>{
+        console.log(err.response)
+      })
+    } else {
+      createDocumentVendor(id, data)
+      .then(res=>{
+        console.log(res.data)
+      })
+      .catch(err=>{
+        console.log(err.response)
+      })
+    }
   }
 
   const onDelete = (e) => {
     e.preventDefault()
     setOpen(false)
-    // deleteDocument(vendor?.id)
+    // deleteVendor(vendor?.id)
     // .then(()=>{
     //   navigate('/vendors')
     // })
@@ -37,15 +46,15 @@ const DocumentGeneralInfo = () => {
   return (
     <div className="divide-y divide-gray-200 bg-white border border-gray-200 rounded-md">
       <div className="flex justify-between items-center p-2">
-        <h1 className="font-medium text-gray-600">ID {document?.id}</h1>
+        <h1 className="text-gray-600 font-bold">{vendor.id ? `ID ${vendor.id}` : ""}</h1>
         <button
           type="submit"
           className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
           onClick={()=>setOpen(true)}
-        >Delete</button>
+        >Remove</button>
       </div>
       <div className="p-2">
-        <DocumentForm initialValues={document} onSubmit={onSubmit} />
+        <AssemblyVendorForm initialValues={vendor} onSubmit={onSubmit} />
       </div>
 
       <Transition.Root show={open} as={Fragment}>
@@ -83,13 +92,12 @@ const DocumentGeneralInfo = () => {
                   </div>
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
-                      Delete document {document?.id}?
+                      Remove vendor {vendor?.id}?
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
-                        Are you sure you want to delete this document? <br/><br />
-                        Part number: <span className="font-medium text-gray-700">{document?.part_number}</span> <br/>
-                        Name: <span className="font-medium text-gray-700">{document?.name}</span>
+                        Are you sure you want to remove this vendor? <br/><br />
+                        Name: <span className="font-medium text-gray-700">{vendor?.name}</span>
                       </p>
                     </div>
                   </div>
@@ -100,7 +108,7 @@ const DocumentGeneralInfo = () => {
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={onDelete}
                   >
-                    Delete
+                    Remove
                   </button>
                   <button
                     type="button"
@@ -121,4 +129,4 @@ const DocumentGeneralInfo = () => {
   )
 }
 
-export default DocumentGeneralInfo
+export default AssemblyVendorInline

@@ -1,15 +1,23 @@
 import { useEffect } from "react"
-import { useForm } from "react-hook-form"
+import { useFieldArray, useForm } from "react-hook-form"
+
 import BeatLoader from "react-spinners/BeatLoader";
+import AssemblyItemForm from "./AssemblyItemForm";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-const DocumentForm = ({ initialValues, onSubmit, isLoading }) => {
+const ItemForm = ({ initialValues, onSubmit, isLoading }) => {
 
-  const { register, handleSubmit, reset, formState: { isDirty } } = useForm({
+  const { register, handleSubmit, reset, formState: { isDirty }, watch, control, setValue } = useForm({
     defaultValues: initialValues
+  })
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "items",
+    keyName: "uuid"
   })
 
   useEffect(()=>{
@@ -20,13 +28,39 @@ const DocumentForm = ({ initialValues, onSubmit, isLoading }) => {
     onSubmit(data)
   })
 
+  const onAppend = (e) => {
+    e.preventDefault()
+    append({
+      quantity: 0,
+      sell_price: 0,
+      item_detail: {
+        part_number: ""
+      }
+    })
+  }
+
+  const type = watch('type')
+  const items = watch(`items`)
+
+  if (items && type === "a") {
+    let total = 0
+
+    items.forEach((currItem, tindx) => {
+      total += currItem.quantity * currItem.sell_price
+    })
+    setValue(`sell_price`, (Math.round(total * 100) / 100).toFixed(2))
+  }
+  
+  useEffect(()=>{
+    setValue('items', [])
+  }, [type])
+
   return (
     <form onSubmit={submit}>
         <div className="grid grid-cols-6 gap-y-2 gap-x-2">
           <div className="col-span-2">
             <label className="block text-sm font-medium text-gray-700">Type</label>
             <select
-              disabled
               {...register("type")}
               className="focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-md sm:text-sm border-gray-300"
             >
@@ -48,7 +82,7 @@ const DocumentForm = ({ initialValues, onSubmit, isLoading }) => {
             <label className="block text-sm font-medium text-gray-700">Part number</label>
             <input
               type="text"
-              {...register("part_number")}
+              {...register("part_number", { required: true })}
               className="focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-md sm:text-sm border-gray-300"
             />
           </div>
@@ -100,29 +134,54 @@ const DocumentForm = ({ initialValues, onSubmit, isLoading }) => {
               className="focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-md sm:text-sm border-gray-300"
             />
           </div>
-          <div className="col-span-2">
+          {type != "a" && <div className="col-span-2">
             <label className="block text-sm font-medium text-gray-700">List price</label>
             <input
               type="text"
               type="number"
               step="0.01"
               min="0"
-              {...register("list_price")}
+              {...register("list_price", { required: true })}
               className="focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-md sm:text-sm border-gray-300"
             />
-          </div>
+          </div>}
           <div className="col-span-2">
             <label className="block text-sm font-medium text-gray-700">Sell price</label>
             <input
+              disabled={type==="a"}
               type="text"
               type="number"
               step="0.01"
               min="0"
-              {...register("sell_price")}
+              {...register("sell_price", { required: true })}
               className="focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-md sm:text-sm border-gray-300"
             />
           </div>
         </div>
+
+        {type === "a" && <div className="pt-4">
+          <h1 className="block text-md font-medium text-gray-700">Parts</h1>
+          <div className="grid grid-cols-1 gap-y-2">
+            {fields.map((item, idx) => {
+
+              const quantity = watch(`items.${idx}.quantity`)
+              const sellPrice = watch(`items.${idx}.sell_price`)
+
+              return (
+                <AssemblyItemForm key={item.uuid} {...{register, setValue, watch, remove, quantity, sellPrice}} item={item} idx={idx} />
+              )
+            })}
+            <div>
+              <button
+                onClick={onAppend}
+                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 bg-indigo-600 hover:bg-indigo-700"
+              >
+                Add part
+              </button>
+            </div>
+          </div>
+          
+        </div>}
 
         <div className="mt-3 flex justify-between">
         <button
@@ -139,4 +198,4 @@ const DocumentForm = ({ initialValues, onSubmit, isLoading }) => {
   ) 
 }
 
-export default DocumentForm
+export default ItemForm

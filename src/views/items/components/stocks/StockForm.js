@@ -6,7 +6,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-const DocumentForm = ({ initialValues, onSubmit, isLoading }) => {
+const StockForm = ({ initialValues, onSubmit, isLoading }) => {
 
   const { register, handleSubmit, reset, formState: { isDirty } } = useForm({
     defaultValues: initialValues
@@ -31,9 +31,6 @@ const DocumentForm = ({ initialValues, onSubmit, isLoading }) => {
               className="focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-md sm:text-sm border-gray-300"
             >
               <option value="s">Stock</option>
-              <option value="l">Labor</option>
-              <option value="d">Document</option>
-              <option value="a">Assembly</option>
             </select>
           </div>
           {/* <div className="col-span-2">
@@ -139,4 +136,4 @@ const DocumentForm = ({ initialValues, onSubmit, isLoading }) => {
   ) 
 }
 
-export default DocumentForm
+export default StockForm

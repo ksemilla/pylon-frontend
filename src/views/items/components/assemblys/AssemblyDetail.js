@@ -1,4 +1,4 @@
-import { fetchDocument } from "api/items"
+import { fetchAssembly } from "api/items"
 import { useEffect, useState } from "react"
 import { Link, Outlet, useLocation, useOutletContext, useParams } from "react-router-dom"
 
@@ -19,21 +19,21 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export function useDocument() {
+export function useAssembly() {
   return useOutletContext();
 }
 
-const DocumentDetail = () => {
+const AssemblyDetail = () => {
 
   const location = useLocation()
   const { id } = useParams()
-  const [document, setDocument] = useState()
+  const [assembly, setAssembly] = useState()
   const [view, setView] = useState("")
 
   useEffect(()=>{
-    fetchDocument(id)
+    fetchAssembly(id)
     .then(res=>{
-      setDocument(res.data)
+      setAssembly(res.data)
     })
     .catch(res=>{
       console.log(res.response)
@@ -66,10 +66,10 @@ const DocumentDetail = () => {
         ))}
       </div>
       <div className="col-span-10">
-        <Outlet context={{ document }}/>
+        <Outlet context={{ assembly }}/>
       </div>
     </div> 
   )
 }
 
-export default DocumentDetail
+export default AssemblyDetail

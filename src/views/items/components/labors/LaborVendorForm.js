@@ -3,7 +3,7 @@ import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useCommonContext } from "stores/common"
 
-const DocumentVendorForm = ({ onSubmit, initialValues, disabled }) => {
+const LaborVendorForm = ({ onSubmit, initialValues, disabled }) => {
 
   const commonContext = useCommonContext()
 
@@ -61,4 +61,4 @@ const DocumentVendorForm = ({ onSubmit, initialValues, disabled }) => {
   ) 
 }
 
-export default observer(DocumentVendorForm)
+export default observer(LaborVendorForm)

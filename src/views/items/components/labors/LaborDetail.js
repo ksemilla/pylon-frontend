@@ -1,4 +1,4 @@
-import { fetchDocument } from "api/items"
+import { fetchLabor } from "api/items"
 import { useEffect, useState } from "react"
 import { Link, Outlet, useLocation, useOutletContext, useParams } from "react-router-dom"
 
@@ -19,21 +19,21 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export function useDocument() {
+export function useLabor() {
   return useOutletContext();
 }
 
-const DocumentDetail = () => {
+const LaborDetail = () => {
 
   const location = useLocation()
   const { id } = useParams()
-  const [document, setDocument] = useState()
+  const [labor, setLabor] = useState()
   const [view, setView] = useState("")
 
   useEffect(()=>{
-    fetchDocument(id)
+    fetchLabor(id)
     .then(res=>{
-      setDocument(res.data)
+      setLabor(res.data)
     })
     .catch(res=>{
       console.log(res.response)
@@ -66,10 +66,10 @@ const DocumentDetail = () => {
         ))}
       </div>
       <div className="col-span-10">
-        <Outlet context={{ document }}/>
+        <Outlet context={{ labor }}/>
       </div>
     </div> 
   )
 }
 
-export default DocumentDetail
+export default LaborDetail
