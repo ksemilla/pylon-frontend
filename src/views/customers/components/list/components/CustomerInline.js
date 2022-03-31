@@ -12,6 +12,7 @@ const CustomerInline = ({ customer, idx }) => {
         idx % 2 === 0 ? "bg-white" : "bg-gray-100"
       )}>
         <div>{customer.id}</div>
+        <div className="col-span-2">{customer.code}</div>
         <div className="col-span-3">{customer.name}</div>
       </div>
     </Link>

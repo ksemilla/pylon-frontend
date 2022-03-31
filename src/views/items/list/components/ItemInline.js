@@ -28,8 +28,16 @@ const ItemInline = ({ item, idx }) => {
         idx % 2 === 0 ? "bg-white" : "bg-gray-100"
       )}>
         <div>{item.id}</div>
-        <div className="col-span-2">{item.part_number}</div>
+        <div className="col-span-3 flex items-center gap-x-2">
+          <div className={classNames(
+              "font-medium text-xs text-white px-1 rounded-sm",
+              // item.type === "a" ? "bg-red-600" : item.type === "l" ? "bg-yellow-600" : item.type === "d" ? "bg-green-600": "bg-blue-600",
+              "bg-gray-500"
+            )}>{item.type.toUpperCase()}</div>
+          <div>{item.part_number}</div>
+        </div>
         <div className="col-span-3">{item.name}</div>
+        <div className="col-span-3">{item.description}</div>
       </div>
     </Link>
   )
