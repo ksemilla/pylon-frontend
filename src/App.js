@@ -1,3 +1,4 @@
+  // STAGING
 import { Route, Routes, useNavigate } from 'react-router-dom'
 
 import Login from "views/login"
@@ -54,7 +55,6 @@ import AssemblyGeneralInfo from 'views/items/components/assemblys/AssemblyGenera
 import AssemblyVendors from 'views/items/components/assemblys/AssemblyVendors';
 
 function App() {
-  // STAGING
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const authContext = useAuthContext()
