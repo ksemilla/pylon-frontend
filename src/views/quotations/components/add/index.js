@@ -19,7 +19,6 @@ const QuotationAdd = () => {
 
   return (
     <div>
-      add
       <QuotationForm onSubmit={onSubmit} />
     </div>
   )

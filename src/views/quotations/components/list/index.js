@@ -11,6 +11,7 @@ const QuotationList = () => {
     let isMounted = true
     getQuotations()
     .then(res=>{
+      console.log(res.data)
       if (isMounted) setQuotations(res.data)
     })
     .catch(err=>{
@@ -25,7 +26,10 @@ const QuotationList = () => {
     <div className="border border-gray-200 rounded-lg overflow-hidden">
       <div className="p-2 grid grid-cols-12 span-x-4 bg-gray-300">
         <div>ID</div>
-        <div className="col-span-3">Name</div>
+        <div className="col-span-2">Customer</div>
+        <div className="col-span-2">Amount</div>
+        <div className="col-span-2">Due date</div>
+        <div className="col-span-2">Created by</div>
       </div>
       <div>
         {quotations.map((quotation, idx) => (

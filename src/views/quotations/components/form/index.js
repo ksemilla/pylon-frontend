@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 
 const QuotationForm = ({ initialValues, onSubmit }) => {
 
-  const { register, handleSubmit, control, watch, setValue, getValues } = useForm({
+  const { register, handleSubmit, control, watch, setValue, getValues, formState: { isDirty } } = useForm({
     defaultValues: initialValues ? {
       ...initialValues,
       created:  dayjs(initialValues.created).format("YYYY-MM-DDTHH:mm"),
